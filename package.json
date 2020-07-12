@@ -1,0 +1,25 @@
+{
+  "name": "vanilla-excel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx webpack",
+    "build": "npx webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/siniiitsa/excel.git"
+  },
+  "author": "Sergey Sinitsa, Sergey Sidoryaka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/siniiitsa/excel/issues"
+  },
+  "homepage": "https://github.com/siniiitsa/excel#readme",
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
+}
