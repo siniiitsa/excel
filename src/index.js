@@ -1,3 +1,1 @@
-import { sayHello } from './fun.js';
-
-sayHello(); 
+import './scss/index.scss';
