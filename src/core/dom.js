@@ -23,6 +23,10 @@ class Dom {
     this.$el.addEventListener(eventType, callback);
   }
 
+  off(eventType, callback) {
+    this.$el.removeEventListener(eventType, callback);
+  }
+
   append(...elements) {
     elements = elements.map((el) => (el instanceof Dom ? el.$el : el));
     if (elements.length > 0) {
