@@ -1,3 +1,5 @@
+import { capitalize } from '@core/utils.js';
+
 export class DomListener {
   constructor($root, listeners = []) {
     if (!$root) {
@@ -8,8 +10,16 @@ export class DomListener {
   }
 
   initDomListeners() {
-    console.log(this.listeners);
+    this.listeners.forEach((listener) => {
+      const method = getMethodName(listener);
+      if (!this[method]) {
+        throw new Error(`Method ${method} is not impemented in ${this.name}`);
+      }
+      this.$root.on(listener, this[method].bind(this));
+    });
   }
 
   removeDomListeners() {}
 }
+
+const getMethodName = (eventName) => `on${capitalize(eventName)}`;

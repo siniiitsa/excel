@@ -1,8 +1,9 @@
 class Dom {
   constructor(selector) {
-    this.$el = typeof selector === 'string' ?
-      document.querySelector(selector) :
-      selector;
+    this.$el =
+      typeof selector === 'string'
+        ? document.querySelector(selector)
+        : selector;
   }
 
   html(html) {
@@ -18,8 +19,12 @@ class Dom {
     return this;
   }
 
+  on(eventType, callback) {
+    this.$el.addEventListener(eventType, callback);
+  }
+
   append(...elements) {
-    elements = elements.map((el) => el instanceof Dom ? el.$el : el);
+    elements = elements.map((el) => (el instanceof Dom ? el.$el : el));
     if (elements.length > 0) {
       this.$el.append(...elements);
     }
