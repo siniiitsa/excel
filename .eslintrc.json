@@ -6,7 +6,10 @@
     "browser": true
   },
   "rules": {
-    "object-curly-spacing": 0
+    "object-curly-spacing": 0,
+    "require-jsdoc": 0,
+    "operator-linebreak": 0,
+    "indent": 0
   },
   "extends": ["eslint:recommended", "google"]
 }
