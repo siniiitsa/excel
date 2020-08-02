@@ -6,7 +6,7 @@ const CODES = {
 const toCell = () => /* html */ `<div class="cell" contenteditable></div>`;
 
 const createCol = (content) => /* html */ `
-  <div class="column">
+  <div class="column" data-type="resizable">
     ${content}
     <div class="col-resize" data-resize="col"></div>
   </div>`;
