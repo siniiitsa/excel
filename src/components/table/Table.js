@@ -16,21 +16,29 @@ export class Table extends ExcelComponent {
     const $parent = $resizer.closest('[data-type="resizable"]');
     const coords = $parent.getCoords();
     const type = $resizer.data.resize;
-    const cells =
-      type === 'col' && this.$root.findAll(`[data-col="${$parent.data.col}"]`);
+    const sideToElongate = {
+      col: 'bottom',
+      row: 'right',
+    }[type];
+    let newValue;
+
+    $resizer.css({
+      opacity: 1,
+      [sideToElongate]: '-5000px',
+    });
 
     document.onmousemove = (e) => {
       switch (type) {
         case 'col': {
           const delta = e.pageX - coords.right;
-          const newWidth = `${coords.width + delta}px`;
-          $parent.css({ width: newWidth });
-          cells.forEach(($cell) => ($cell.style.width = newWidth));
+          newValue = `${coords.width + delta}px`;
+          $resizer.css({ right: `${-delta}px` });
           break;
         }
         case 'row': {
           const delta = e.pageY - coords.bottom;
-          $parent.css({ height: `${coords.height + delta}px` });
+          newValue = coords.height + delta;
+          $resizer.css({ bottom: `${-delta}px` });
           break;
         }
         default:
@@ -40,6 +48,16 @@ export class Table extends ExcelComponent {
 
     document.onmouseup = () => {
       document.onmousemove = null;
+      document.onmouseup = null;
+      if (type === 'col') {
+        $resizer.css({ right: 0 });
+        this.$root.findAll(`[data-col="${$parent.data.col}"]`)
+          .forEach(($cell) => ($cell.style.width = newValue));
+      } else if (type === 'row') {
+        $parent.css({ height: `${newValue}px` });
+        $resizer.css({ bottom: 0 });
+      }
+      $resizer.css({ opacity: 0 });
     };
   }
 
