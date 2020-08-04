@@ -12,20 +12,35 @@ export class Table extends ExcelComponent {
   }
 
   onMousedown(event) {
-    if (event.target.dataset.resize) {
-      const $resizer = $(event.target);
-      const $parent = $resizer.closest('[data-type="resizable"]');
-      const coords = $parent.getCoords();
+    const $resizer = $(event.target);
+    const $parent = $resizer.closest('[data-type="resizable"]');
+    const coords = $parent.getCoords();
+    const type = $resizer.data.resize;
+    const cells =
+      type === 'col' && this.$root.findAll(`[data-col="${$parent.data.col}"]`);
 
-      document.onmousemove = (e) => {
-        const delta = e.pageX - coords.right;
-        $parent.$el.style.width = `${coords.width + delta}px`;
-      };
+    document.onmousemove = (e) => {
+      switch (type) {
+        case 'col': {
+          const delta = e.pageX - coords.right;
+          const newWidth = `${coords.width + delta}px`;
+          $parent.css({ width: newWidth });
+          cells.forEach(($cell) => ($cell.style.width = newWidth));
+          break;
+        }
+        case 'row': {
+          const delta = e.pageY - coords.bottom;
+          $parent.css({ height: `${coords.height + delta}px` });
+          break;
+        }
+        default:
+          throw new Error(`Unknow resize type: ${type}`);
+      }
+    };
 
-      document.onmouseup = () => {
-        document.onmousemove = null;
-      };
-    }
+    document.onmouseup = () => {
+      document.onmousemove = null;
+    };
   }
 
   toHTML() {
