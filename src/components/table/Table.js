@@ -31,7 +31,11 @@ export class Table extends ExcelComponent {
 
     if (isCell(event)) {
       const $cell = $(event.target);
-      this.selection.select($cell);
+      if (event.shiftKey) {
+        this.selection.selectGroup($cell);
+      } else {
+        this.selection.select($cell);
+      }
     }
   }
 
