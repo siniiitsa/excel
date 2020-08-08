@@ -3,8 +3,18 @@ const CODES = {
   Z: 90,
 };
 
-const toCell = (_, index) =>
-  /* html */ `<div class="cell" data-col="${index}" contenteditable></div>`;
+const toCell = (row) => (_, col) => {
+  col++;
+  return `
+    <div
+      class="cell"
+      data-type="cell"
+      data-col="${col}"
+      data-id="${row}:${col}"
+      contenteditable
+    ></div>
+  `;
+};
 
 const createCol = (content, index) => /* html */ `
   <div class="column" data-type="resizable" data-col="${index}">
@@ -28,7 +38,7 @@ const createRow = (cells = '', rowIndex = 0) => {
   `;
 };
 
-const toCol = (_, i) => createCol(String.fromCharCode(CODES.A + i), i);
+const toCol = (_, i) => createCol(String.fromCharCode(CODES.A + i), i + 1);
 
 export const createTable = (rowsCount = 15) => {
   const colsCount = CODES.Z - CODES.A + 1;
@@ -36,9 +46,9 @@ export const createTable = (rowsCount = 15) => {
   const cols = new Array(colsCount).fill().map(toCol).join('');
 
   const rows = [createRow(cols, 0)];
-  for (let i = 1; i <= rowsCount; i++) {
-    const cells = new Array(colsCount).fill().map(toCell).join('');
-    rows.push(createRow(cells, i));
+  for (let row = 1; row <= rowsCount; row++) {
+    const cells = new Array(colsCount).fill().map(toCell(row)).join('');
+    rows.push(createRow(cells, row));
   }
 
   return rows.join('');
