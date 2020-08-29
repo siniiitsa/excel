@@ -4,6 +4,7 @@ import { shouldResize, isCell } from './table.functions';
 import { resizeHandler } from './table.resize';
 import { TableSelection } from './TableSelection';
 import { $ } from '@core/dom';
+import { matrix } from '@core/utils';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table';
@@ -30,11 +31,14 @@ export class Table extends ExcelComponent {
     }
 
     if (isCell(event)) {
-      const $cell = $(event.target);
+      const $target = $(event.target);
       if (event.shiftKey) {
-        this.selection.selectGroup($cell);
+        const $cells = matrix($target, this.selection.current)
+          .map((id) => this.$root.find(`[data-id="${id}"]`));
+
+        this.selection.selectGroup($cells);
       } else {
-        this.selection.select($cell);
+        this.selection.select($target);
       }
     }
   }

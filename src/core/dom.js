@@ -69,6 +69,14 @@ class Dom {
     Object.assign(this.$el.style, styles);
     return this;
   }
+
+  id(parse) {
+    if (parse) {
+      const [row, col] = this.id().split(':').map(Number);
+      return { row, col };
+    }
+    return this.data.id;
+  }
 }
 
 export function $(selector) {
